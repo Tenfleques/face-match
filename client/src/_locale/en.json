@@ -1,0 +1,66 @@
+{
+    "_appname" : {
+        "title" : "Face Match",
+        "description" : "application title"
+    },
+    "_image_match_link" : {
+        "title" : "FM: Images",
+        "description" : "FM images link title"
+    },
+    "_video_match_link" : {
+        "title" : "FM: Video",
+        "description" : "FM video link title"
+    },
+    "_description": {
+        "title" : "",
+        "description" : ""
+    },
+    "_image_match_page": {
+        "title" : "Face matching in set of images",
+        "description" : "Title of ImageMatch page"
+    },
+    "_video_match_page": {
+        "title" : "Face matching in videos",
+        "description" : "Title of VideoMatch page"
+    },
+    "_target" : {
+        "title" : "targets",
+        "description" : "text for targets images list"
+    },
+    "_wild" : {
+        "title" : "wild",
+        "description" : "text for wild images list"
+    },
+    "_upload" : {
+        "title" : "Upload",
+        "description" : "text for upload control"
+    },
+    "_upload_images_title" : {
+        "title" : "Upload images",
+        "description" : "text for upload images box "
+    },
+    "_info_select_wild_title" : {
+        "title" : "Select wild image",
+        "description" : "title for the instruction card after selecting target"
+    },
+    "_info_select_wild_content" : {
+        "title" : "To see the assumed similar face to the selected target image please select from the list of the wild images.",
+        "description" : "content for the instruction card after selecting target"
+    },
+    "_image_match_distance_title": {
+        "title" : "The matching distance between the images",
+        "description" : "the label for the matching distance on the match view plane"
+    },
+    "_home_lead" : {
+        "title" : "Welcome to the Face Match app",
+        "description" : "the welcome text on the home page"
+    },
+    "_clear_button" : {
+        "title" : "Clear",
+        "description" : "button text for buttons indicating clearing action"
+    },
+    "_upload_destination" : {
+        "title" : "Select upload destination",
+        "description" : "select control for the image/video upload destination"
+    }
+}

@@ -1,0 +1,6 @@
+imutils
+opencv-python
+dlib
+watchdog==0.10.1
+python-magic
+psutil

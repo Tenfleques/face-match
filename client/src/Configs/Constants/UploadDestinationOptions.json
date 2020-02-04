@@ -1,0 +1,14 @@
+{
+    "name": "upload_destination",
+    "caption" : "_upload_destination",
+    "value": "Full-time",
+    "options": [
+        {
+            "value" : "target",
+            "label" : "target"
+        },{
+            "value" : "wild",
+            "label" : "wild"
+        }
+    ]
+}

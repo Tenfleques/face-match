@@ -1,0 +1,13 @@
+.ipynb_checkpoints
+dlib
+build
+client/node_modules
+client/build
+weights
+logs
+images/
+node_modules
+__pycache__
+package-lock.json
+
+

@@ -1,0 +1,36 @@
+{
+    "uploads" : {
+        "url" : "http://localhost:6006",
+        "endpoints" : {
+            "images" : {
+                "name" : "images",
+                "get" : {
+                    "description" : "get images from server"
+                },
+                "post" : {
+                    "description" : "send images to server"
+                }
+            },
+            "videos" : {
+
+            }
+        }
+    },
+    "matches" : {
+        "url" : "http://localhost:6006",
+        "endpoints" : {
+            "images" : {
+                "name" : "image-matches",
+                "get" : {
+                    "description" : "get image-matches json from server"
+                }
+            },
+            "videos" : {
+                "name" : "video-matches",
+                "get" : {
+                    "description" : "get video-matches json from server"
+                }
+            }
+        }
+    }
+}

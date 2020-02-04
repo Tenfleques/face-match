@@ -1,0 +1,12 @@
+[
+    {
+        "caption" : "_appname",
+        "link" : "/"
+    },{
+        "caption" : "_image_match_link",
+        "link" : "/image_match"
+    },{
+        "caption" : "_video_match_link",
+        "link" : "/video_match"
+    }
+]

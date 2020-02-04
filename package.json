@@ -1,0 +1,14 @@
+{
+    "name": "face-match-rest",
+    "version": "0.1.0",
+    "private": true,
+    "description": "",
+    "dependencies": {
+        "express": "^4.17.1",
+        "multer": "^1.4.2",
+        "body-parser": "1.19.0"
+    },
+    "scripts": {
+        "start": "nodemon -L app.js --watch ./app.js"
+    }
+}

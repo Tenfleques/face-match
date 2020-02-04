@@ -1,0 +1,30 @@
+{
+    "_appname" : {
+        "title" : "Face Match",
+        "description" : "application title"
+    },
+    "_image_match_link" : {
+        "title" : "FM: Images",
+        "description" : "FM images link title"
+    },
+    "_video_match_link" : {
+        "title" : "FM: Video",
+        "description" : "FM video link title"
+    },
+    "_description": {
+        "title" : "",
+        "description" : ""
+    },
+    "_image_match_page": {
+        "title" : "Face matching in set of images",
+        "description" : "Title of ImageMatch page"
+    },
+    "_video_match_page": {
+        "title" : "Face matching in videos",
+        "description" : "Title of VideoMatch page"
+    },
+    "_home_lead" : {
+        "title" : "Welcome to the Face Match app",
+        "description" : "the welcome text on the home page"
+    }    
+}
