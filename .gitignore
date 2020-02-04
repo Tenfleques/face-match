@@ -1,4 +1,5 @@
 .ipynb_checkpoints
+.vscode
 dlib
 build
 client/node_modules
