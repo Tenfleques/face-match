@@ -107,13 +107,13 @@ std::string compareFaces(std::vector<dlib::matrix<float,0,1>> embedded_wild,
     for (size_t i = 0; i < embedded_target.size(); ++i){
         for (size_t j = 0; j < embedded_wild.size(); ++j){
             float distance = length(embedded_target[i]-embedded_wild[j]);
-            if(distance < threshold){
+            //if(distance < threshold){
                 // take the box information from the wild image name
                 ss << "{ \"distance\": " << distance
                 << ", \"known\": \"" << getFilename(target_labels[i]) << "\""
                 << ", \"unknown\": \"" << getFilename(wild_labels[j]) << "\""
                 << "},";
-            }            
+            //}            
         }
     }
     return ss.str();

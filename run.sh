@@ -3,7 +3,7 @@
 cd ./build
 # start faces watcher
 echo "starting the faces directory watcher"
-nohup ./watch_faces > ../logs/faces.log 2> ../logs/faces.log &
+nohup ./watch_faces > ../logs/faces.log 2> ../logs/faces.error.log &
 cd ../
 # start uploads watcher
 echo "starting the uploads watcher service"

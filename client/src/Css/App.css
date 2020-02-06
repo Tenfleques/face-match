@@ -21,10 +21,35 @@ code {
 .z-1000{
   z-index: 10000;
 }
+.mh-50{
+  max-height: 50vh;
+}
+.overflow-hidden{
+  overflow: hidden;
+}
 
+.mh-70-px{
+  max-height: 70px;
+}
 .mh-85{
   max-height: 85vh;
 }
+.mh-85-pc{
+  max-height: 85%;
+}
+.mh-50-pc{
+  max-height: 50%;
+}
+.mh-65-pc{
+  max-height: 65%;
+}
+.mh-75-pc{
+  max-height: 75%;
+}
+.mh-75{
+  max-height: 75vh;
+}
+
 @media (min-width: 768px) {
   .mh-md-85{
     max-height: 85vh;

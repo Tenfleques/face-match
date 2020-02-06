@@ -22,12 +22,10 @@ class FileList extends Component{
                     onClick={(e) => this.props.onClickFile(f)} 
                     caption={f.caption} 
                     className="d-flex text-secondary" />
-            });                                 
+            });
         }
         return "";
     }
-
-
     render(){
         const def_title = "";
         return (<div className={this.props.className} >

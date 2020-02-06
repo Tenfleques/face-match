@@ -17,10 +17,11 @@ class Handler(FileSystemEventHandler):
             return None
 
         elif event.event_type == 'created':
-            if event.src_path.split(".")[-1].lower() in valid_exts:
+            ext = event.src_path.split(".")[-1].lower()
+            if ext in valid_exts:
                 output_path = "/".join(event.src_path.split("/")[:-1]).replace("uploads", "faces")
 
-                out_paths = carve_faces.carveFaces(event.src_path, output_path, "HOG")
+                out_paths = carve_faces.carveFaces(event.src_path, output_path, "HOG", "./weights/mmod_human_face_detector.dat")
                 # if len (out_paths):
                 #     os.remove(event.src_path)
 

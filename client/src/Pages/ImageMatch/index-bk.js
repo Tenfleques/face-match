@@ -1,8 +1,8 @@
 import React from 'react';
 import Utils from "../../utilities";
 import FileUploader from "../../Components/FileUploader";
-import ImageStage from "../../Components/Stage/index";
-import FileList from "../../Components/FileList/index";
+import ImageStage from "../../Components/Stage/index-bk";
+import FileList from "../../Components/FileList/index-bk";
 import APIEndpoints from "../../Configs/Constants/api.json";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome} from '@fortawesome/free-solid-svg-icons'
@@ -18,14 +18,12 @@ class ImageMatch extends React.Component {
             view : UPLOAD,
             wilds : [],
             targets : [],
-            distances : [],
-            data: [],
             target : null,
+            target_ID : null,
             stage : null,
             distance : ""
         }
         this.onClickTarget = this.onClickTarget.bind(this);
-        this.onUploadSuccess = this.onUploadSuccess.bind(this);
         this.getImageMatches = this.getImageMatches.bind(this);
         this.onClickWild = this.onClickWild.bind(this);
     }
@@ -38,68 +36,72 @@ class ImageMatch extends React.Component {
         const url = APIEndpoints.watch.url + "/" + APIEndpoints.watch.endpoints.images.name + "?" + user_watch;
 
         if (!!window.EventSource) {
-            const eventSource = new EventSource(url);
+
+            const eventSource = new EventSource(url)
+            
+            // eventSource
+
             eventSource.onerror= (e) => {
                 eventSource.close();
             };
             eventSource.onopen = (e) =>{
-                // console.log(e);
+                console.log(e);
             }
             eventSource.addEventListener('update', (e) => {                
-                this.updateLists(JSON.parse(e.data));
+                this.updateLists(JSON.parse(e.data), this.state.target);
             });
           } else {
             setInterval(this.getImageMatches(), ServerConstants.polling.time)
           }
     }
-    onClickTarget(f){
-        this.setState({target : f}, this.updateLists);
+    onClickTarget(e, f){
+        let target = this.state.targets.find((t) => t.name = f);
+        this.setState({target : target, target_ID: target.name, view : MATCH, stage: null, distance : null});
     }
     
-    onClickWild(f){
+    onClickWild(e, f){
         if (this.state.target === null){
             return;
         }
-        let distance = this.state.distances.find((a) => a.key === f.key);
-        this.setState({view : MATCH, stage : f, distance : distance}) 
+
+        let stage = this.state.wilds.find((a) => a.name === f);
+        let distance = this.state.target.distances.find((a) => a.key === this.state.target.name + f);
+
+        if(distance){
+            this.setState({view : MATCH, stage : stage, distance : distance}) 
+        }
     }
-    formatImageCaption(obj, target_name){        
-        obj.caption =  <div className={(obj.name === target_name? "bg-danger" : "") + " col-12 card px-0 my-2"}>
+
+    formatImageCaption(obj, d){
+        obj.caption =  <div className="col-12 px-0">
                 <picture>
                     <img id={obj.name} src={APIEndpoints.matches.url +  obj.image} className="card-img-top" alt="" />
                     <img src="images/placeholder.png" className="img-fluid" alt="" />
                 </picture>
-                <div className="card-body">
+                <div className="card-body py-0">
                     <h5 className="card-title">
                         {obj.name}
                     </h5>
                 </div>
             </div>
+        obj.distances = [d];
+
         return obj;
     }
-    updateLists(data,cb){
+    updateLists(data, target){
         let wilds = [],
-            targets = [],
-            distances = [];
-
-        if (!data){
-            data = this.state.data;
+            targets = [];
+        if (data.length === 0 && target === null){
+            return this.setState({target : target});
         }
 
-        let target = this.state.target;
-        let target_name = target? target.name : null;
-        
         for (let i = 0; i < data.length; ++i){
             let tw = data[i];
-            if (target){
-                if (target.name !== tw["target"].name){
-                    continue;
-                }
-            }
-            distances.push({
+            let d = {
                 "distance" : tw.distance,
                 "key" : tw.key
-            });
+            };
+            
             let t_index = targets.findIndex((a) => {
                 return a.name === tw["target"].name
             });
@@ -108,25 +110,24 @@ class ImageMatch extends React.Component {
             });
             
             if(w_index === -1){
-                wilds.push(this.formatImageCaption(tw["wild"]));
+                wilds.push(this.formatImageCaption(tw["wild"], d));
+            }else{
+                wilds[w_index].distances.push(d);
             }
             
             if(t_index === -1){
-                targets.push(this.formatImageCaption(tw["target"], target_name));
+                targets.push(this.formatImageCaption(tw["target"], d));
+            }else{
+                targets[t_index].distances.push(d);
             }
         };
 
         this.setState({
-            distances,
             wilds,
-            targets,
-            data
-        }, () => {
-            if(cb){
-                cb();
-            }
+            targets
         });
     }
+
     getImageMatches(target, cb){
         let url;
         if(target){
@@ -134,17 +135,15 @@ class ImageMatch extends React.Component {
         }else{
             url = APIEndpoints.matches.url + "/" + APIEndpoints.matches.endpoints.images.name;
         }
+
         fetch(url, {method: 'GET'})
         .then(res => res.json())
         .then(res => {
-            this.updateLists(res);
+            this.updateLists(res, target, cb);
         })
         .catch(error => {
             console.error(error)
         });
-    }
-    onUploadSuccess(){
-        // do something associated with upload success
     }
     
     targetsListTitle(){
@@ -155,15 +154,19 @@ class ImageMatch extends React.Component {
                             icon={faHome}
                             className="mr-3 mouse-pointer" 
                             onClick={() => {
-                                this.setState({view : UPLOAD, stage : null, target : null},() => this.updateLists(this.state.data));
+                                this.updateLists([],"", () => {
+                                    this.setState({view : UPLOAD, stage : null, target : null});
+                                });                 
                             }
                         }
                     />)}
+                
                 {Utils.TextUtils.getLocalCaption("_target")}
             </div>
         </div>
     }
     render () {
+        
         return (
             <div className="">            
                 <div className="container-fluid mt-5">
@@ -179,23 +182,34 @@ class ImageMatch extends React.Component {
                             files={this.state.wilds} 
                             onClickFile={this.onClickWild}
                             className="card pt-3 col-3 " 
+                            activeClassName="bg-warning"
+                            activeElementID={this.state.stage ? this.state.stage.key : null}
                             title={Utils.TextUtils.getLocalCaption("_wild")}/>
                         <div id="match-stage" className="col-6">
-                            {this.state.view === UPLOAD ? 
-                                (this.state.target?
-                                    <InfoCard 
-                                        title={Utils.TextUtils.getLocalCaption("_info_select_wild_title")}
-                                        className="card col-12"
-                                        content={Utils.TextUtils.getLocalCaption("_info_select_wild_content")}
-                                    />
-                                    : <FileUploader 
+                            {this.state.view === UPLOAD 
+                                && <FileUploader 
                                             title={Utils.TextUtils.getLocalCaption("_upload_images_title")}
-                                            onUploadSuccess={this.onUploadSuccess} />)
-                            : <ImageStage distance={this.state.distance} image={this.state.stage}  className="card col-12 mh-85 overflow-hidden pb-2" /> }
+                                            onUploadSuccess={() => {/** to do upload success function */}} />
+                            }
+
+                            {
+                                this.state.stage 
+                                && <ImageStage distance={this.state.distance} image={this.state.stage}  className="card col-12 mh-85 mh-md-85" /> }
+                            {
+                                this.state.view === MATCH 
+                                && !this.state.stage 
+                                && <InfoCard 
+                                title={Utils.TextUtils.getLocalCaption("_info_select_wild_title")}
+                                className="card col-12"
+                                content={Utils.TextUtils.getLocalCaption("_info_select_wild_content")}
+                            />
+                            }
                         </div>
                         <FileList 
                             onClickFile={this.onClickTarget} 
                             files={this.state.targets} 
+                            activeClassName="bg-danger"
+                            activeElementID={this.state.target_ID}
                             className="card pt-3 col-3 min-h-85" 
                             title={this.targetsListTitle()}/>  
                     </div>            

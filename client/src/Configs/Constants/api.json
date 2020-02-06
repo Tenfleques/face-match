@@ -16,6 +16,23 @@
             }
         }
     },
+    "watch" : {
+        "url" : "http://localhost:6006",
+        "endpoints" : {
+            "images" : {
+                "name" : "image-watch",
+                "get" : {
+                    "description" : "SSE watch for user specific image tasks"
+                }
+            },
+            "videos" : {
+                "name" : "video-watch",
+                "get" : {
+                    "description" : "SSE watch for user specific video tasks"
+                }
+            }
+        }
+    },
     "matches" : {
         "url" : "http://localhost:6006",
         "endpoints" : {

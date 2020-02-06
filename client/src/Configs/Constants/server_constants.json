@@ -1,5 +1,9 @@
 {
     "images" : {
         "scale" : 800
+    },
+    "polling" : {
+        "time" : 90000,
+        "description" : "the frequence of polling data from the server, [1,5 mins]"
     }
 }

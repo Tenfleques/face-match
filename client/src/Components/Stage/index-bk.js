@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import AnimateLoad from "../../HOCS/AnimateLoad"
 import ServerConstants from "../../Configs/Constants/server_constants.json";
-import InfoCard from "../../Components/card/info";
+import InfoCard from "../card/info";
 import Utils from "../../utilities";
 
 const ImageStage = AnimateLoad(class ImageStage extends Component{
@@ -10,18 +10,27 @@ const ImageStage = AnimateLoad(class ImageStage extends Component{
         this.state = {
             image: props.image,
             distance : props.distance,
-            stage_image : ""
+            stage_image : null
         }
     }
     componentDidUpdate(prevProps){
+        // console.log(prevProps.distance.key, this.props.distance.key);
+
         if(prevProps.image.name !== this.props.image.name){
             this.setState({ 
                 image   : this.props.image,
                 distance: this.props.distance,
-                stage_image : ""
+                stage_image : null
             }, () => {
                 this.drawImage(); 
             })
+        }else if(prevProps.distance.key !== this.props.distance.key){
+            
+            this.setState({ 
+                distance: this.props.distance
+            }, () => {
+                // console.log("updated the distance");
+            });
         }
     }
     componentDidMount(){
@@ -64,11 +73,13 @@ const ImageStage = AnimateLoad(class ImageStage extends Component{
                             + this.state.distance.distance)
                         }
                     className={this.props.className}
-                    content={<img 
-                                className="img-fluid"
-                                alt = "images/placeholder.png"
-                                src={this.state.stage_image || "images/placeholder.png"}
-                            />  
+                    content={<div className="card">
+                                <img 
+                                    alt=""
+                                    className="card-img-top img-thumbnail"
+                                    src={this.state.stage_image || "images/placeholder.png"}
+                                />  
+                            </div>
                         }
                 />        
     }

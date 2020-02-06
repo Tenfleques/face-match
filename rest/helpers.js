@@ -9,6 +9,7 @@ const imageFilter = function(req, file, cb) {
 const getRandomNamePrepend = () => {
     let ran = Math.floor(Math.random() * 10000)
     return Math.floor(Math.random() * Math.floor(ran));
-  }
+}
+
 exports.imageFilter = imageFilter;
 exports.getRandomNamePrepend = getRandomNamePrepend;
