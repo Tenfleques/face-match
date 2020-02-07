@@ -11,7 +11,7 @@ const helpers = require('./rest/helpers');
 
 const app = express();
 
-const port = 6008;
+const port = 8080;
 
 app.use(express.static(__dirname + '/client/build'));
 app.use(stream.enable());
@@ -40,7 +40,7 @@ const storage = multer.diskStorage({
 
 app.post('/images', (req, res) => {
     let upload = multer({ storage: storage, fileFilter: helpers.imageFilter }).any();
-    
+
     upload(req, res, function(err) {
         if (req.fileValidationError) {
             return res.send(req.fileValidationError);

@@ -1,4 +1,5 @@
 #!/bin/bash
+cd /mf/application
 # reset the network. Delete all the uploaded images and the faces and the json log
 
 rm ./images/uploads/wild/*

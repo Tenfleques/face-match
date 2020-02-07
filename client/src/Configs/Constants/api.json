@@ -1,6 +1,6 @@
 {
     "uploads" : {
-        "url" : "http://localhost:6006",
+        "url" : "http://localhost:8080",
         "endpoints" : {
             "images" : {
                 "name" : "images",
@@ -17,7 +17,7 @@
         }
     },
     "watch" : {
-        "url" : "http://localhost:6006",
+        "url" : "http://localhost:8080",
         "endpoints" : {
             "images" : {
                 "name" : "image-watch",
@@ -34,7 +34,7 @@
         }
     },
     "matches" : {
-        "url" : "http://localhost:6006",
+        "url" : "http://localhost:8080",
         "endpoints" : {
             "images" : {
                 "name" : "image-matches",

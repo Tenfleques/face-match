@@ -28,12 +28,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 ENV CI_BUILD_PYTHON python
 
-# CACHE_STOP is used to rerun future commands, otherwise cloning tensorflow will be cached and will not pull the most recent version
-ARG CACHE_STOP=1
-# Check out TensorFlow source code if --build-arg CHECKOUT_TF_SRC=1
-ARG CHECKOUT_TF_SRC=0
-RUN test "${CHECKOUT_TF_SRC}" -eq 1 && git clone --single-branch --branch r2.0 https://github.com/tensorflow/tensorflow.git /tensorflow_src || true
-
 ARG USE_PYTHON_3_NOT_2=3.7
 ARG _PY_SUFFIX=${USE_PYTHON_3_NOT_2:+3}
 ARG PYTHON=python${_PY_SUFFIX}
@@ -50,7 +44,6 @@ RUN ${PIP} --no-cache-dir install --upgrade \
     pip \
     setuptools
 
-# Some TF tools expect a "python" binary
 RUN ln -s $(which ${PYTHON}) /usr/local/bin/python 
 
 RUN apt-get update && apt-get install -y \
@@ -58,61 +51,25 @@ RUN apt-get update && apt-get install -y \
     curl \
     git \
     wget \
-    openjdk-8-jdk \
     ${PYTHON}-dev \
     virtualenv \
     swig
 
+RUN mkdir -p /mf/application && chmod -R a+rwx /mf/
+WORKDIR /mf/application
+
+COPY requirements.txt /mf/application/requirements.txt
+COPY *.sh /mf/application/
+
 RUN ${PIP} --no-cache-dir install \
-    Pillow \
-    keras \
-    scitools3 \
-    pulp \
-    xmltodict \
-    h5py \
-    keras_applications \
-    keras_preprocessing \
-    matplotlib \
-    mock \
-    numpy \
-    scipy \
-    sklearn \
-    pandas \
-    future \
-    imutils \
-    opencv-python \
-    dlib \
-    portpicker \
+    -r /mf/application/requirements.txt \
     && test "${USE_PYTHON_3_NOT_2}" -eq 1 && true || ${PIP} --no-cache-dir install \
     enum34
 
-# Install bazel
-ARG BAZEL_VERSION=0.26.1
-RUN mkdir /bazel && \
-    wget -O /bazel/installer.sh "https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh" && \
-    wget -O /bazel/LICENSE.txt "https://raw.githubusercontent.com/bazelbuild/bazel/master/LICENSE" && \
-    chmod +x /bazel/installer.sh && \
-    /bazel/installer.sh && \
-    rm -f /bazel/installer.sh
-
-COPY bashrc /etc/bash.bashrc
-RUN chmod a+rwx /etc/bash.bashrc
-
-RUN ${PIP} install jupyter matplotlib
-RUN ${PIP} install jupyter_http_over_ws
-RUN jupyter serverextension enable --py jupyter_http_over_ws
-
-RUN mkdir -p /tf/tensorflow-tutorials && chmod -R a+rwx /tf/
 RUN mkdir /.local && chmod a+rwx /.local
-RUN apt-get install -y --no-install-recommends wget
 
-RUN apt-get autoremove -y && apt-get remove -y wget
-WORKDIR /tf
-EXPOSE 8888
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
 
-RUN ${PYTHON} -m ipykernel.kernelspec
+CMD ["bash", "/mf/application/run.sh"]
 
-RUN ${PIP} --no-cache-dir install \
-    tensorflow_datasets
-
-CMD ["bash", "-c", "source /etc/bash.bashrc && jupyter notebook --notebook-dir=/tf --ip 0.0.0.0 --no-browser --allow-root"]
+EXPOSE 8080

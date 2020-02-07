@@ -6,6 +6,18 @@ This is a light application to detect faces in images and match faces in picture
 
 Docker
 
+## Automated build and/or start 
+
+use this command to build all the dependencies and start the respective services and start the front end accessible at http://localhost:8080. 
+
+you can make edits to suit your needs in the *.sh files. 
+
+```bash
+./init.sh .
+```
+
+or do it step by step:
+
 ## Build the container
 
 ```bash
@@ -15,13 +27,13 @@ Docker
 ### get the interactive container terminal
 
 ```bash
-docker exec -it tf-loc /bin/bash
+docker exec -it mf-loc /bin/bash
 ```
 
 ### from inside the container navigate to the project folder
 
 ```bash
-cd /tf/tendai/
+cd /mf/application/
 ```
 
 ## Compile the application
