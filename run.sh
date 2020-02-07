@@ -3,7 +3,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
 nvm install node
-nvm use --lts
 
 cd /mf/application
 FILE=/mf/application/node_modules
